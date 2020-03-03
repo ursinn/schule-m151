@@ -26,22 +26,42 @@
  * For more information, please refer to <http://unlicense.org>
  */
 
-$con = mysqli_connect('localhost', 'root', '');
-mysqli_select_db($con, 'schule');
-$res = mysqli_query($con, 'SELECT * FROM personen');
-$num = mysqli_num_rows($res);
-echo $num . "<br>";
-
-if ($num > 0)
-    echo "Ergebnis:<br>";
-else
-    echo "keine Ergebnisse!<br>";
-
-while ($data = mysqli_fetch_assoc($res)) {
-    echo $data["name"] . ", "
-        . $data["vorname"] . ", "
-        . $data["personalnummer"] . ", "
-        . $data["gehalt"] . ", "
-        . $data["geburtstag"] . "<br>";
+if (isset($_POST['name'])) {
+    $name = $_POST['name'];
+    $con = mysqli_connect('localhost', 'root', '');
+    mysqli_select_db($con, 'schule');
+    $res = mysqli_query($con, "SELECT * FROM `personen` WHERE `name` LIKE '%$name'");
+    $num = mysqli_num_rows($res);
+    if ($num > 0)
+        echo "Ergebnis:<br>";
+    else
+        echo "keine Ergebnisse!<br>";
+    while ($data = mysqli_fetch_assoc($res)) {
+        echo $data["name"] . ", "
+            . $data["vorname"] . ", "
+            . $data["personalnummer"] . ", "
+            . $data["gehalt"] . ", "
+            . $data["geburtstag"] . "<br>";
+    }
+    echo "<br>";
+    mysqli_close($con);
 }
-mysqli_close($con);
+?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form action="personsuchen.php" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name">
+    <br>
+    <input type="submit">
+</form>
+</body>
+</html>

@@ -26,15 +26,38 @@
  * For more information, please refer to <http://unlicense.org>
  */
 
-if (isset($_POST['name'])) {
-    $name = $_POST['name'];
-    $vorname = $_POST['vorname'];
-    $personalnummer = $_POST['personalnummer'];
-    $gehalt = $_POST['gehalt'];
-    $geburtstag = $_POST['geburtstag'];
+if (isset($_POST['money'])) {
+    $value = $_POST['money'];
+    $regex = "";
+    if ($value == 1) {
+        $regex = "<= '3000'";
+    }
+    if ($value == 2) {
+        $regex = "BETWEEN '3000' AND '3500'";
+    }
+    if ($value == 3) {
+        $regex = "BETWEEN '3500' AND '5000'";
+    }
+    if ($value == 4) {
+        $regex = ">= '5000'";
+    }
+
     $con = mysqli_connect('localhost', 'root', '');
     mysqli_select_db($con, 'schule');
-    mysqli_query($con, "INSERT INTO `personen`(`name`, `vorname`, `personalnummer`, `gehalt`, `geburtstag`) VALUES ('$name', '$vorname', '$personalnummer', '$gehalt', '$geburtstag')");
+    $res = mysqli_query($con, "SELECT * FROM `personen` WHERE `gehalt` $regex");
+    $num = mysqli_num_rows($res);
+    if ($num > 0)
+        echo "Ergebnis:<br>";
+    else
+        echo "keine Ergebnisse!<br>";
+    while ($data = mysqli_fetch_assoc($res)) {
+        echo $data["name"] . ", "
+            . $data["vorname"] . ", "
+            . $data["personalnummer"] . ", "
+            . $data["gehalt"] . ", "
+            . $data["geburtstag"] . "<br>";
+    }
+    echo "<br>";
     mysqli_close($con);
 }
 ?>
@@ -48,23 +71,21 @@ if (isset($_POST['name'])) {
     <title>Document</title>
 </head>
 <body>
-<form action="neukunde.php" method="post">
-    <label for="name">Name</label>
-    <input type="text" name="name" id="name">
+<form action="radio.php" method="post">
+    <label for="1">bis 3000:</label>
+    <input type="radio" id="1" name="money" value="1">
     <br>
-    <label for="vorname">Vorname</label>
-    <input type="text" name="vorname" id="vorname">
+    <label for="2">3000 - 3500:</label>
+    <input type="radio" id="2" name="money" value="2">
     <br>
-    <label for="personalnummer">Personalnummer</label>
-    <input type="number" name="personalnummer" id="personalnummer">
+    <label for="3">3500 - 5000:</label>
+    <input type="radio" id="3" name="money" value="3">
     <br>
-    <label for="gehalt">Gehalt</label>
-    <input type="number" name="gehalt" id="gehalt">
-    <br>
-    <label for="geburtstag">Geburtstag</label>
-    <input type="date" name="geburtstag" id="geburtstag">
+    <label for="4">ab 5000:</label>
+    <input type="radio" id="4" name="money" value="4">
     <br>
     <input type="submit">
+    <input type="reset">
 </form>
 </body>
 </html>
