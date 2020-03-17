@@ -50,13 +50,13 @@ if (isset($_POST['nr'])) {
         return check;
     }
 </script>
-    <form action="kunde.php" method="post" onSubmit="return conf()">
-        <label for="nr">Festplatte Nr</label>
-        <input type="number" id="nr" name="nr">
-        <br>
-        <input type="submit">
-        <br>
-        <input type="reset">
-    </form>
+<form action="kunde.php" method="post" onSubmit="return conf()">
+    <label for="nr">Festplatte Nr</label>
+    <input type="number" id="nr" name="nr">
+    <br>
+    <input type="submit">
+    <br>
+    <input type="reset">
+</form>
 </body>
 </html>
