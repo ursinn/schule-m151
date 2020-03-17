@@ -26,11 +26,39 @@
  * For more information, please refer to <http://unlicense.org>
  */
 
-if (isset($_POST['nr'])) {
-    $nr = $_POST['nr'];
+if (isset($_POST['preis'])) {
+    $value = $_POST['preis'];
+    $regex = "";
+    if ($value == 1) {
+        $regex = "<= '3000'";
+    }
+    if ($value == 2) {
+        $regex = "BETWEEN '3000' AND '3500'";
+    }
+    if ($value == 3) {
+        $regex = "BETWEEN '3500' AND '5000'";
+    }
+    if ($value == 4) {
+        $regex = ">= '5000'";
+    }
+
     $con = mysqli_connect('localhost', 'root', '');
     mysqli_select_db($con, 'schule');
-    mysqli_query($con, "DELETE FROM `personen` WHERE `personalnummer` = '$nr'");
+    $res = mysqli_query($con, "SELECT * FROM `festplatten` WHERE `preis` $regex");
+    $num = mysqli_num_rows($res);
+    if ($num > 0)
+        echo "Ergebnis:<br>";
+    else
+        echo "keine Ergebnisse!<br>";
+    while ($data = mysqli_fetch_assoc($res)) {
+        echo $data["hersteller"] . ", "
+            . $data["type"] . ", "
+            . $data["gb"] . ", "
+            . $data["preis"] . ", "
+            . $data["artnummer"] . ", "
+            . $data["prod"] . "<br>";
+    }
+    echo "<br>";
     mysqli_close($con);
 }
 ?>
@@ -44,19 +72,21 @@ if (isset($_POST['nr'])) {
     <title>Document</title>
 </head>
 <body>
-<script type="text/javascript">
-    function conf() {
-        check = window.confirm("Wollen sie diesen Datensatz wirklich löschen?");
-        return check;
-    }
-</script>
-    <form action="kunde.php" method="post" onSubmit="return conf()">
-        <label for="nr">Personalnummer</label>
-        <input type="number" id="nr" name="nr">
-        <br>
-        <input type="submit">
-        <br>
-        <input type="reset">
-    </form>
+<form action="hardwareradio.php" method="post">
+    <label for="1">bis 3000:</label>
+    <input type="radio" id="1" name="preis" value="1">
+    <br>
+    <label for="2">3000 - 3500:</label>
+    <input type="radio" id="2" name="preis" value="2">
+    <br>
+    <label for="3">3500 - 5000:</label>
+    <input type="radio" id="3" name="preis" value="3">
+    <br>
+    <label for="4">ab 5000:</label>
+    <input type="radio" id="4" name="preis" value="4">
+    <br>
+    <input type="submit">
+    <input type="reset">
+</form>
 </body>
 </html>

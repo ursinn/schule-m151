@@ -26,11 +26,16 @@
  * For more information, please refer to <http://unlicense.org>
  */
 
-if (isset($_POST['nr'])) {
-    $nr = $_POST['nr'];
+if (isset($_POST['name'])) {
+    $hersteller = $_POST['hersteller'];
+    $type = $_POST['type'];
+    $gb = $_POST['gb'];
+    $preis = $_POST['preis'];
+    $artnummer = $_POST['artnummer'];
+    $prod = $_POST['prod'];
     $con = mysqli_connect('localhost', 'root', '');
     mysqli_select_db($con, 'schule');
-    mysqli_query($con, "DELETE FROM `personen` WHERE `personalnummer` = '$nr'");
+    mysqli_query($con, "INSERT INTO `festplatten`(`hersteller`, `type`, `gb`, `preis`, `artnummer`, `prod`) VALUES ('$hersteller', '$type', '$gb', '$preis', '$artnummer', '$prod')");
     mysqli_close($con);
 }
 ?>
@@ -44,19 +49,26 @@ if (isset($_POST['nr'])) {
     <title>Document</title>
 </head>
 <body>
-<script type="text/javascript">
-    function conf() {
-        check = window.confirm("Wollen sie diesen Datensatz wirklich löschen?");
-        return check;
-    }
-</script>
-    <form action="kunde.php" method="post" onSubmit="return conf()">
-        <label for="nr">Personalnummer</label>
-        <input type="number" id="nr" name="nr">
-        <br>
-        <input type="submit">
-        <br>
-        <input type="reset">
-    </form>
+<form action="hardwareneu.php" method="post">
+    <label for="hersteller">Hersteller</label>
+    <input type="text" name="hersteller" id="hersteller">
+    <br>
+    <label for="type">Type</label>
+    <input type="text" name="type" id="type">
+    <br>
+    <label for="gb">GB</label>
+    <input type="number" name="gb" id="gb">
+    <br>
+    <label for="preis">Preis</label>
+    <input type="number" name="preis" id="preis">
+    <br>
+    <label for="artnummer">Artnummer</label>
+    <input type="number" name="artnummer" id="artnummer">
+    <br>
+    <label for="prod">Prod</label>
+    <input type="date" name="prod" id="prod">
+    <br>
+    <input type="submit">
+</form>
 </body>
 </html>

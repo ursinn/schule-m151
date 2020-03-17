@@ -30,7 +30,7 @@ if (isset($_POST['nr'])) {
     $nr = $_POST['nr'];
     $con = mysqli_connect('localhost', 'root', '');
     mysqli_select_db($con, 'schule');
-    mysqli_query($con, "DELETE FROM `personen` WHERE `personalnummer` = '$nr'");
+    mysqli_query($con, "DELETE FROM `festplatten` WHERE `id` = '$nr'");
     mysqli_close($con);
 }
 ?>
@@ -51,7 +51,7 @@ if (isset($_POST['nr'])) {
     }
 </script>
     <form action="kunde.php" method="post" onSubmit="return conf()">
-        <label for="nr">Personalnummer</label>
+        <label for="nr">Festplatte Nr</label>
         <input type="number" id="nr" name="nr">
         <br>
         <input type="submit">

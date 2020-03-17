@@ -26,11 +26,25 @@
  * For more information, please refer to <http://unlicense.org>
  */
 
-if (isset($_POST['nr'])) {
-    $nr = $_POST['nr'];
+if (isset($_POST['hersteller'])) {
+    $hersteller = $_POST['hersteller'];
     $con = mysqli_connect('localhost', 'root', '');
     mysqli_select_db($con, 'schule');
-    mysqli_query($con, "DELETE FROM `personen` WHERE `personalnummer` = '$nr'");
+    $res = mysqli_query($con, "SELECT * FROM `festplatten` WHERE `hersteller` LIKE '%$hersteller%'");
+    $num = mysqli_num_rows($res);
+    if ($num > 0)
+        echo "Ergebnis:<br>";
+    else
+        echo "keine Ergebnisse!<br>";
+    while ($data = mysqli_fetch_assoc($res)) {
+        echo $data["hersteller"] . ", "
+            . $data["type"] . ", "
+            . $data["gb"] . ", "
+            . $data["preis"] . ", "
+            . $data["artnummer"] . ", "
+            . $data["prod"] . "<br>";
+    }
+    echo "<br>";
     mysqli_close($con);
 }
 ?>
@@ -44,19 +58,11 @@ if (isset($_POST['nr'])) {
     <title>Document</title>
 </head>
 <body>
-<script type="text/javascript">
-    function conf() {
-        check = window.confirm("Wollen sie diesen Datensatz wirklich löschen?");
-        return check;
-    }
-</script>
-    <form action="kunde.php" method="post" onSubmit="return conf()">
-        <label for="nr">Personalnummer</label>
-        <input type="number" id="nr" name="nr">
-        <br>
-        <input type="submit">
-        <br>
-        <input type="reset">
-    </form>
+<form action="hardwaresuche.php" method="post">
+    <label for="hersteller">Hersteller:</label>
+    <input type="text" id="hersteller" name="hersteller">
+    <br>
+    <input type="submit">
+</form>
 </body>
 </html>
