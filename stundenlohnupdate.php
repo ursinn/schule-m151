@@ -26,11 +26,14 @@
  * For more information, please refer to <http://unlicense.org>
  */
 
-if (isset($_POST['nr'])) {
-    $nr = $_POST['nr'];
+if (isset($_POST['id'])) {
+    $id = $_POST['id'];
+    $lohn = $_POST['lohn'];
+    $stunden = $_POST['stunden'];
+    $datum = $_POST['date'];
     $con = mysqli_connect('localhost', 'root', '');
     mysqli_select_db($con, 'schule');
-    mysqli_query($con, "DELETE FROM `festplatten` WHERE `id` = '$nr'");
+    mysqli_query($con, "UPDATE `personen` SET `anzahl`='$stunden',`stundenlohn`='$lohn', `datum`='$datum' WHERE `id` = '$id'");
     mysqli_close($con);
 }
 ?>
@@ -44,19 +47,20 @@ if (isset($_POST['nr'])) {
     <title>Document</title>
 </head>
 <body>
-<script type="text/javascript">
-    function conf() {
-        check = window.confirm("Wollen sie diesen Datensatz wirklich löschen?");
-        return check;
-    }
-</script>
-<form action="hardware.php" method="post" onSubmit="return conf()">
-    <label for="nr">Festplatte Nr</label>
-    <input type="number" id="nr" name="nr">
+<form action="stundenlohnupdate.php" method="post">
+    <label for="id">Id</label>
+    <input type="number" name="id" id="id">
+    <br>
+    <label for="lohn">lohn</label>
+    <input type="number" name="lohn" id="lohn">
+    <br>
+    <label for="stunden">stunden</label>
+    <input type="number" name="stunden" id="stunden">
+    <br>
+    <label for="date">Datum</label>
+    <input type="date" name="date" id="date">
     <br>
     <input type="submit">
-    <br>
-    <input type="reset">
 </form>
 </body>
 </html>

@@ -26,11 +26,11 @@
  * For more information, please refer to <http://unlicense.org>
  */
 
-if (isset($_POST['nr'])) {
-    $nr = $_POST['nr'];
+if (isset($_POST['id'])) {
+    $id = $_POST['id'];
     $con = mysqli_connect('localhost', 'root', '');
-    mysqli_select_db($con, 'schule');
-    mysqli_query($con, "DELETE FROM `festplatten` WHERE `id` = '$nr'");
+    mysqli_select_db($con, 'suppliers');
+    mysqli_query($con, "DELETE FROM `suppliers` WHERE `SupplierID` = '$id'");
     mysqli_close($con);
 }
 ?>
@@ -50,9 +50,9 @@ if (isset($_POST['nr'])) {
         return check;
     }
 </script>
-<form action="hardware.php" method="post" onSubmit="return conf()">
-    <label for="nr">Festplatte Nr</label>
-    <input type="number" id="nr" name="nr">
+<form action="kunde.php" method="post" onSubmit="return conf()">
+    <label for="id">Id</label>
+    <input type="number" id="id" name="id">
     <br>
     <input type="submit">
     <br>

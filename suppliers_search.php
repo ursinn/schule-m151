@@ -26,11 +26,31 @@
  * For more information, please refer to <http://unlicense.org>
  */
 
-if (isset($_POST['nr'])) {
-    $nr = $_POST['nr'];
+if (isset($_POST['CompanyName'])) {
+    $CompanyName = $_POST['CompanyName'];
     $con = mysqli_connect('localhost', 'root', '');
-    mysqli_select_db($con, 'schule');
-    mysqli_query($con, "DELETE FROM `festplatten` WHERE `id` = '$nr'");
+    mysqli_select_db($con, 'suppliers');
+    $res = mysqli_query($con, "SELECT * FROM `suppliers` WHERE `CompanyName` LIKE '$CompanyName%'");
+    $num = mysqli_num_rows($res);
+    if ($num > 0)
+        echo "Ergebnis:<br>";
+    else
+        echo "keine Ergebnisse!<br>";
+    while ($data = mysqli_fetch_assoc($res)) {
+        echo $data["SupplierID"] . ", "
+            . $data["CompanyName"] . ", "
+            . $data["ContactName"] . ", "
+            . $data["ContactTitle"] . ", "
+            . $data["Address"] . ", "
+            . $data["City"] . ", "
+            . $data["Region"] . ", "
+            . $data["PostalCode"] . ", "
+            . $data["Country"] . ", "
+            . $data["Phone"] . ", "
+            . $data["Fax"] . ", "
+            . $data["HomePage"] . "<br>";
+    }
+    echo "<br>";
     mysqli_close($con);
 }
 ?>
@@ -44,19 +64,11 @@ if (isset($_POST['nr'])) {
     <title>Document</title>
 </head>
 <body>
-<script type="text/javascript">
-    function conf() {
-        check = window.confirm("Wollen sie diesen Datensatz wirklich löschen?");
-        return check;
-    }
-</script>
-<form action="hardware.php" method="post" onSubmit="return conf()">
-    <label for="nr">Festplatte Nr</label>
-    <input type="number" id="nr" name="nr">
+<form action="suppliers_search.php" method="post">
+    <label for="CompanyName">CompanyName:</label>
+    <input type="text" id="CompanyName" name="CompanyName">
     <br>
     <input type="submit">
-    <br>
-    <input type="reset">
 </form>
 </body>
 </html>

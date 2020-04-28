@@ -26,11 +26,22 @@
  * For more information, please refer to <http://unlicense.org>
  */
 
-if (isset($_POST['nr'])) {
-    $nr = $_POST['nr'];
+if (isset($_POST['id'])) {
+    $id = $_POST['id'];
     $con = mysqli_connect('localhost', 'root', '');
     mysqli_select_db($con, 'schule');
-    mysqli_query($con, "DELETE FROM `festplatten` WHERE `id` = '$nr'");
+    $res = mysqli_query($con, "SELECT * FROM `personen` WHERE `personalnummer` = '$id'");
+    $num = mysqli_num_rows($res);
+    $gehalt = 0;
+    if ($num > 0)
+        echo "Ergebnis:<br>";
+    else
+        echo "keine Ergebnisse!<br>";
+    while ($data = mysqli_fetch_assoc($res)) {
+        $gehalt += $data['anzahl'] * $data['stundenlohn'];
+    }
+    echo "Gehalt: $gehalt";
+    echo "<br>";
     mysqli_close($con);
 }
 ?>
@@ -44,19 +55,10 @@ if (isset($_POST['nr'])) {
     <title>Document</title>
 </head>
 <body>
-<script type="text/javascript">
-    function conf() {
-        check = window.confirm("Wollen sie diesen Datensatz wirklich löschen?");
-        return check;
-    }
-</script>
-<form action="hardware.php" method="post" onSubmit="return conf()">
-    <label for="nr">Festplatte Nr</label>
-    <input type="number" id="nr" name="nr">
-    <br>
+<form action="stundenlohn.php" method="post">
+    <label for="id">personalnummer</label>
+    <input type="number" name="id" id="id">
     <input type="submit">
-    <br>
-    <input type="reset">
 </form>
 </body>
 </html>

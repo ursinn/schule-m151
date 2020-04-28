@@ -26,11 +26,11 @@
  * For more information, please refer to <http://unlicense.org>
  */
 
-if (isset($_POST['nr'])) {
-    $nr = $_POST['nr'];
+if (isset($_POST['gehalt'])) {
+    $gehalt = $_POST['gehalt'];
     $con = mysqli_connect('localhost', 'root', '');
     mysqli_select_db($con, 'schule');
-    mysqli_query($con, "DELETE FROM `festplatten` WHERE `id` = '$nr'");
+    mysqli_query($con, "UPDATE personen SET gehalt = gehalt * '$gehalt' ");
     mysqli_close($con);
 }
 ?>
@@ -44,15 +44,9 @@ if (isset($_POST['nr'])) {
     <title>Document</title>
 </head>
 <body>
-<script type="text/javascript">
-    function conf() {
-        check = window.confirm("Wollen sie diesen Datensatz wirklich löschen?");
-        return check;
-    }
-</script>
-<form action="hardware.php" method="post" onSubmit="return conf()">
-    <label for="nr">Festplatte Nr</label>
-    <input type="number" id="nr" name="nr">
+<form action="kundengehalt.php" method="post">
+    <label for="gehalt">Faktor für Gehalt</label>
+    <input type="number" name="gehalt" id="gehalt">
     <br>
     <input type="submit">
     <br>

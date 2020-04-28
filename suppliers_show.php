@@ -26,37 +26,23 @@
  * For more information, please refer to <http://unlicense.org>
  */
 
-if (isset($_POST['nr'])) {
-    $nr = $_POST['nr'];
-    $con = mysqli_connect('localhost', 'root', '');
-    mysqli_select_db($con, 'schule');
-    mysqli_query($con, "DELETE FROM `festplatten` WHERE `id` = '$nr'");
-    mysqli_close($con);
+$con = mysqli_connect('localhost', 'root', '');
+mysqli_select_db($con, 'suppliers');
+$res = mysqli_query($con, "SELECT * FROM `suppliers`");
+$num = mysqli_num_rows($res);
+while ($data = mysqli_fetch_assoc($res)) {
+    echo $data["SupplierID"] . ", "
+        . $data["CompanyName"] . ", "
+        . $data["ContactName"] . ", "
+        . $data["ContactTitle"] . ", "
+        . $data["Address"] . ", "
+        . $data["City"] . ", "
+        . $data["Region"] . ", "
+        . $data["PostalCode"] . ", "
+        . $data["Country"] . ", "
+        . $data["Phone"] . ", "
+        . $data["Fax"] . ", "
+        . $data["HomePage"] . "<br>";
 }
-?>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-<script type="text/javascript">
-    function conf() {
-        check = window.confirm("Wollen sie diesen Datensatz wirklich löschen?");
-        return check;
-    }
-</script>
-<form action="hardware.php" method="post" onSubmit="return conf()">
-    <label for="nr">Festplatte Nr</label>
-    <input type="number" id="nr" name="nr">
-    <br>
-    <input type="submit">
-    <br>
-    <input type="reset">
-</form>
-</body>
-</html>
+echo "<br>";
+mysqli_close($con);

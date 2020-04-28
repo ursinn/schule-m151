@@ -26,11 +26,16 @@
  * For more information, please refer to <http://unlicense.org>
  */
 
-if (isset($_POST['nr'])) {
+if (isset($_POST['name'])) {
+    $name = $_POST['name'];
+    $vorname = $_POST['vorname'];
     $nr = $_POST['nr'];
+    $datum = $_POST['date'];
+    $stunden = $_POST['stunden'];
+    $lohn = $_POST['lohn'];
     $con = mysqli_connect('localhost', 'root', '');
     mysqli_select_db($con, 'schule');
-    mysqli_query($con, "DELETE FROM `festplatten` WHERE `id` = '$nr'");
+    mysqli_query($con, "INSERT INTO `personen` (`name`, `vorname`, `personalnummer`, `datum`, `anzahl`, `stundenlohn`) VALUES ('$name', '$vorname', '$nr', '$datum', '$stunden', '$lohn');");
     mysqli_close($con);
 }
 ?>
@@ -44,19 +49,26 @@ if (isset($_POST['nr'])) {
     <title>Document</title>
 </head>
 <body>
-<script type="text/javascript">
-    function conf() {
-        check = window.confirm("Wollen sie diesen Datensatz wirklich löschen?");
-        return check;
-    }
-</script>
-<form action="hardware.php" method="post" onSubmit="return conf()">
-    <label for="nr">Festplatte Nr</label>
-    <input type="number" id="nr" name="nr">
+<form action="stundenlohninsert.php" method="post">
+    <label for="name">name</label>
+    <input type="text" name="name" id="name">
+    <br>
+    <label for="vorname">vorname</label>
+    <input type="text" name="vorname" id="vorname">
+    <br>
+    <label for="nr">personalnummer</label>
+    <input type="number" name="nr" id="nr">
+    <br>
+    <label for="date">Datum</label>
+    <input type="date" name="date" id="date">
+    <br>
+    <label for="stunden">stunden</label>
+    <input type="number" name="stunden" id="stunden">
+    <br>
+    <label for="lohn">lohn</label>
+    <input type="number" name="lohn" id="lohn">
     <br>
     <input type="submit">
-    <br>
-    <input type="reset">
 </form>
 </body>
 </html>
